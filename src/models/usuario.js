@@ -1,11 +1,10 @@
 const Sequelize = require('sequelize');
 const database = require('../db');
 
-const Usuario = database.define('usuario', {
+const Usuario = database.define('usuarios', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        allowNull: false,
         primaryKey: true
     },
     nome: {
@@ -17,12 +16,17 @@ const Usuario = database.define('usuario', {
         allowNull: false,
         unique: true
     },
-    password: {
+    senha: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    created_at: {
+    createdAt: {
         type: Sequelize.DATE,
+        field: 'created_at'
+    },
+    updatedAt: {
+        type: Sequelize.DATE,
+        field: 'updated_at'
     }
 });
 
