@@ -1,10 +1,12 @@
 const Usuario = require("../models/usuario");
+const bcrypt = require("bcrypt");
 
 module.exports = {
     async create(req, res) {
-        const {nome, email, senha} = req.body;
         try {
-            const usuario = await Usuario.create({nome, email, senha});
+            const {nome, email, senha} = req.body;
+            const senhaHash = await bcrypt.hash(senha, 10);
+            const usuario = await Usuario.create({nome, email, senha: senhaHash});
             return res.json(usuario);
         } catch (error) {
             return res.status(400).send(error);
