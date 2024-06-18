@@ -5,4 +5,6 @@ const routes = express.Router();
 
 routes.post('/usuario/registro', UsuarioController.create);
 
+routes.post('/login', UsuarioController.login);
+
 module.exports = routes;

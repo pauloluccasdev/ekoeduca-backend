@@ -1,10 +1,9 @@
 const sendWelcomeEmail = require("../mails/nodemailer");
 const Usuario = require("../models/usuario");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
-
-
 
     async create(req, res) {
 
@@ -23,6 +22,33 @@ module.exports = {
             return res.json('Usuário registrado com sucesso.');
         } catch (error) {
 
+            return res.status(500).send(error);
+        }
+    },
+
+    async login(req, res) {
+        
+        try {
+            const {email, senha} = req.body;
+            if (!email || !senha) {
+                return res.status(400).send({ errors: 'Valores ausentes.' });
+            }
+
+            const usuario = await Usuario.findOne({ where: { email } });
+            if (!usuario) {
+                return res.status(404).send({ error: 'Usuário não encontrado.' });
+            }
+
+            const senhaValida = await bcrypt.compare(senha, usuario.senha);
+            if (!senhaValida) {
+                return res.status(401).send({ error: 'Senha inválida.'} );
+            }
+
+            const token = jwt.sign({ id: usuario.id }, 'secret', { expiresIn: '1h' });
+            return res.json({token, usuario});
+            
+        } catch (error) {
+            
             return res.status(500).send(error);
         }
     }
