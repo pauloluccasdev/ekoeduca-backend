@@ -37,6 +37,11 @@ module.exports = {
             if (!usuario) {
                 return res.status(404).send({ error: 'Usuário não encontrado.' });
             }
+
+            const senhaValida = await bcrypt.compare(senha, usuario.senha);
+            if (!senhaValida) {
+                return res.status(401).send({ error: 'Senha inválida.'} );
+            }
             
             return res.json({email, senha});
             
