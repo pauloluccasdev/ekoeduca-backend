@@ -29,5 +29,23 @@ module.exports = {
 
             return res.status(500).send(error);
         }
+    },
+
+
+    async findById(req, res) {
+
+        try {
+
+            const curso = await Curso.findByPk(req.params.id);
+
+            if (!curso) {
+                return res.status(404).json({ error: "Curso não encontrado" });
+            }
+
+            return res.json(curso);
+        } catch (error) {
+
+            return res.status(500).send(error);
+        }
     }
 }
