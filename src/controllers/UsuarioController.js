@@ -1,7 +1,7 @@
 const sendWelcomeEmail = require("../mails/nodemailer");
 const Usuario = require("../models/usuario");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { generateToken } = require("../utils/jwt");
 
 module.exports = {
 
@@ -44,7 +44,7 @@ module.exports = {
                 return res.status(401).send({ error: 'Senha inválida.'} );
             }
 
-            const token = jwt.sign({ id: usuario.id }, 'secret', { expiresIn: '1h' });
+            const token = generateToken(usuario);
             return res.json({token, usuario});
             
         } catch (error) {
