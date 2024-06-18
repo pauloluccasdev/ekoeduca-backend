@@ -17,5 +17,17 @@ module.exports = {
 
             return res.status(500).send(error);
         }
+    },
+
+    async findAll(req, res) {
+
+        try {
+
+            const cursos = await Curso.findAll();
+            return res.json(cursos);
+        } catch (error) {
+
+            return res.status(500).send(error);
+        }
     }
 }
